@@ -1,0 +1,36 @@
+name: Deploy Backend to EC2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/backend/**' # Only trigger when backend code changes!
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Go to the repository folder (clone it first if you haven't!)
+            cd ~/watchparty
+            
+            # Pull latest changes from GitHub
+            git pull origin main
+            
+            # Install dependencies and build
+            cd apps/backend
+            npm install
+            npm run build
+            
+            # Restart the PM2 process
+            pm2 restart watchparty-backend || pm2 start dist/main.js --name "watchparty-backend"
