@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # ── Local PostgreSQL (use instead of Supabase for local dev) ──
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: watchparty
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  # ── LocalStack (local S3 emulator) ──
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - '4566:4566'
+    environment:
+      SERVICES: s3
+      DEFAULT_REGION: us-east-1
+    volumes:
+      - localstack:/var/lib/localstack
+
+volumes:
+  pgdata:
+  localstack:

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WatchParty — Watch Together</title>
+    <meta name="description" content="Watch videos together in perfect sync with friends. No accounts needed. WebRTC webcams and real-time chat." />
+    <script>
+      if (typeof window !== 'undefined') {
+        window.global = window;
+        window.process = window.process || { env: {}, nextTick: function(cb) { setTimeout(cb, 0); } };
+        window.Buffer = window.Buffer || { isBuffer: function() { return false; } };
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
